@@ -32,11 +32,11 @@ app.use(express.static('public'));
 
 //******** TODO: Insert code for Session Middleware below ********//
 app.use(session({
-    secret  : 'secret',
-    resave : false,
-    saveUninitialized : true,
+    secret: 'secret',
+    resave: false,
+    saveUninitialized: true,
     //session expires after 1 week of inactivity
-    cookie: {maxAge:1000*60*60*24*7}
+    cookie: { maxAge: 1000 * 60 * 60 * 24 * 7 }
 }))
 
 app.use(flash());
@@ -48,7 +48,7 @@ app.set('view engine', 'ejs');
 const checkAuthenticated = (req, res, next) => {
     if (req.session.user) {
         return next();
-    }else {
+    } else {
         req.flash('error', 'Please log in to view this page');
         res.redirect('/login');
     }
@@ -65,7 +65,7 @@ const checkAdmin = (req, res, next) => {
 };
 // Routes
 app.get('/', (req, res) => {
-    res.render('index', { user: req.session.user, messages: req.flash('success')});
+    res.render('index', { user: req.session.user, messages: req.flash('success') });
 });
 
 app.get('/register', (req, res) => {
@@ -77,9 +77,9 @@ app.get('/register', (req, res) => {
 
 const validateRegistration = (req, res, next) => {
     const { username, email, password, address, contact } = req.body;
-    
-    if (!username|| !email || !password || !address || !contact) {
-        return res.status(400).send('All fields are required'); 
+
+    if (!username || !email || !password || !address || !contact) {
+        return res.status(400).send('All fields are required');
     }
     if (password.length < 6) {
         req.flash('error', 'Password must be at least 6 characters long');
@@ -111,7 +111,7 @@ app.post('/register', validateRegistration, (req, res) => {
 
 //******** TODO: Insert code for login routes to render login page below ********//
 app.get('/login', (req, res) => {
-    res.render('login', { 
+    res.render('login', {
         messages: req.flash('success'),
         errors: req.flash('error')
     });
@@ -120,15 +120,15 @@ app.get('/login', (req, res) => {
 //******** TODO: Insert code for login routes for form submission below ********//
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    
+
     //validate email and password
     if (!email || !password) {
         req.flash('error', 'All fields are required.');
         return res.redirect('/login');
     }
 
-    const sql= 'SELECT * FROM users WHERE email = ? AND password = SHA1(?)';
-    db.query(sql,[email,password], (err, results) => {
+    const sql = 'SELECT * FROM users WHERE email = ? AND password = SHA1(?)';
+    db.query(sql, [email, password], (err, results) => {
         if (err) {
             throw err;
         }
@@ -145,7 +145,8 @@ app.post('/login', (req, res) => {
             res.redirect('/login');
         }
     }
-)});
+    )
+});
 //******** TODO (ONLY IN L11B): Insert code for dashboard route to render dashboard page for users. ********//
 app.get('/dashboard', checkAuthenticated, (req, res) => {
     res.render('dashboard', { user: req.session.user });
@@ -160,7 +161,8 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 // Starting the server
-//const PORT = process.env.PORT || 3000;
-//app.listen(PORT, () => {
-    //console.log(`Server is running at http://localhost:${PORT}`);
-//});// link to local host
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server is running at http://localhost:${PORT}`);
+});// link to local host
