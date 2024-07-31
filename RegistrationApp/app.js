@@ -10,10 +10,14 @@ const app = express();
 
 // Database connection
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'C237_L11_usersdb'
+    //host: 'localhost',
+    //user: 'root',
+    //password: '',
+    //database: 'C237_L11_usersdb'
+    host: 'sql.freedb.tech',
+    user: 'freedb_celincia',
+    password: 'a97WADpv@RaXAps',
+    database: 'freedb_student_cel'
 });
 
 db.connect((err) => {
@@ -156,7 +160,7 @@ app.get('/logout', (req, res) => {
     res.redirect('/');
 });
 // Starting the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
-});// link to local host
+//const PORT = process.env.PORT || 3000;
+//app.listen(PORT, () => {
+    //console.log(`Server is running at http://localhost:${PORT}`);
+//});// link to local host
